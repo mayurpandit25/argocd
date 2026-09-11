@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1 
+kind: AppProject               
+metadata:
+  name: frontend-team         
+  namespace: argocd          
+spec:
+  description: Project for frontend team apps   
+  sourceRepos:               
+    - https://github.com/mayurpandit25/argocd.git
+  destinations:                
+    - namespace: frontend
+      server: https://kubernetes.default.svc  
+  clusterResourceWhitelist:    
+    - group: "*"              
+      kind: "*"               
+  namespaceResourceWhitelist:  
+    - group: "*"              
+      kind: "*"
+  roles:                      
+    - name: frontend-admins      
+      description: Admins for frontend team
+      policies:               
+        - p, proj:frontend-team:frontend-admins, applications, *, frontend-team/*, allow  # Full access to all apps in this Project, Here p = policy, proj = project, applications = resource, * = action (all actions), frontend-team/* = resource name pattern, allow = effect (allow or deny)
